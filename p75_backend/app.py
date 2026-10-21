@@ -16,7 +16,7 @@ app = Flask(__name__)
 CORS(app)
 
 # JWT Configuration
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'your-secret-key')
+app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY']  # required; set in .env
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 jwt = JWTManager(app)
 
@@ -86,8 +86,6 @@ def login():
         
         if user:
             hashed_password = hashlib.sha512(data['password'].encode('utf-8')).hexdigest()
-            print(f"Hashed password: {hashed_password}")
-            print(f"Database password: {user['password']}")
             if user['password'] == hashed_password:
                 access_token = create_access_token(identity=user['username'])
                 return jsonify(access_token=access_token)

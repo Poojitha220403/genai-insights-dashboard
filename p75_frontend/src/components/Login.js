@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -18,7 +19,7 @@ function Login({ setToken }) {
       return;
     }
     try {
-      const response = await axios.post('https://poojithabackend.devhost.my/login', { username, password });
+      const response = await axios.post(`${API_URL}/login`, { username, password });
       setToken(response.data.access_token);
       history.push('/dashboard');
       toast.success('Login successful!');

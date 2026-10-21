@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_URL } from '../config';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import DOMPurify from 'dompurify';
@@ -19,7 +20,7 @@ function Dashboard() {
         return;
       }
       try {
-        const response = await axios.get('https://poojithabackend.devhost.my/dashboard', {
+        const response = await axios.get(`${API_URL}/dashboard`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setData(response.data);

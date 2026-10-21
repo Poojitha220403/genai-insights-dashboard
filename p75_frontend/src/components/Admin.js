@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -82,10 +83,10 @@ function Admin() {
     try {
       const token = localStorage.getItem('token');
       const [contentsRes, chartsRes] = await Promise.all([
-        axios.get(`https://poojithabackend.devhost.my/admin/contents/${pageType}`, {
+        axios.get(`${API_URL}/admin/contents/${pageType}`, {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axios.get(`https://poojithabackend.devhost.my/admin/charts/${pageType}`, {
+        axios.get(`${API_URL}/admin/charts/${pageType}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);
@@ -111,8 +112,8 @@ function Admin() {
     
     try {
       const endpoint = editMode === 'content' ? 
-        `https://poojithabackend.devhost.my/admin/content/${editId}` : 
-        'https://poojithabackend.devhost.my/admin/add_content';
+        `${API_URL}/admin/content/${editId}` : 
+        `${API_URL}/admin/add_content`;
 
       const method = editMode === 'content' ? 'PUT' : 'POST';
 
@@ -152,8 +153,8 @@ function Admin() {
     
     try {
       const endpoint = editMode === 'chart' ? 
-        `https://poojithabackend.devhost.my/admin/chart/${editId}` : 
-        'https://poojithabackend.devhost.my/admin/add_chart';
+        `${API_URL}/admin/chart/${editId}` : 
+        `${API_URL}/admin/add_chart`;
 
       const method = editMode === 'chart' ? 'PUT' : 'POST';
 
@@ -185,7 +186,7 @@ function Admin() {
   const handleDelete = async (id, type) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`https://poojithabackend.devhost.my/admin/${type}/${id}`, {
+      await axios.delete(`${API_URL}/admin/${type}/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Deleted successfully!');

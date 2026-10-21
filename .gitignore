@@ -128,3 +128,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# --- Project-specific ---
+.env
+**/build/
+*.map
+__pycache__/
+.venv/
+.DS_Store

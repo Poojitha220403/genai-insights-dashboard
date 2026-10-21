@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { API_URL } from '../config';
 import axios from 'axios';
 import * as d3 from 'd3';
 import DOMPurify from 'dompurify';
@@ -19,7 +20,7 @@ function Reports() {
         return;
       }
       try {
-        const response = await axios.get('https://poojithabackend.devhost.my/reports', {
+        const response = await axios.get(`${API_URL}/reports`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         console.log('API Response:', response.data); // Debug log
