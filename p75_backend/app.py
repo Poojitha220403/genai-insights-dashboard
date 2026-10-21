@@ -78,6 +78,7 @@ def login():
     if not data or not data.get('username') or not data.get('password'):
         return jsonify({"msg": "Missing username or password"}), 400
     
+    conn = cursor = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -94,13 +95,16 @@ def login():
         print(f"Database error: {e}")
         return jsonify({"msg": "Internal server error"}), 500
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 
 @app.route('/dashboard', methods=['GET'])
 @jwt_required()
 def dashboard():
+    conn = cursor = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -122,12 +126,15 @@ def dashboard():
         print(f"Database error: {e}")
         return jsonify({"msg": "Internal server error"}), 500
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 @app.route('/summary', methods=['GET'])
 @jwt_required()
 def summary():
+    conn = cursor = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -175,12 +182,15 @@ def summary():
         print(f"Database error: {e}")
         return jsonify({"msg": "Internal server error"}), 500
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 @app.route('/reports', methods=['GET'])
 @jwt_required()
 def reports():
+    conn = cursor = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -228,8 +238,10 @@ def reports():
         print(f"Database error: {e}")
         return jsonify({"msg": "Internal server error"}), 500
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
         
   
 @app.route('/')
@@ -240,6 +252,7 @@ def home():
 @app.route('/admin/contents/<page_type>', methods=['GET'])
 @jwt_required()
 def get_contents(page_type):
+    conn = cursor = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -254,12 +267,15 @@ def get_contents(page_type):
         print(f"Database error: {e}")
         return jsonify({"msg": "Internal server error"}), 500
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 @app.route('/admin/charts/<page_type>', methods=['GET'])
 @jwt_required()
 def get_charts(page_type):
+    conn = cursor = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -274,8 +290,10 @@ def get_charts(page_type):
         print(f"Database error: {e}")
         return jsonify({"msg": "Internal server error"}), 500
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 @app.route('/admin/add_content', methods=['POST'])
 @jwt_required()
@@ -288,6 +306,7 @@ def add_content():
     if not all([page_type, content, order_id]):
         return jsonify({"msg": "Missing required fields"}), 400
     
+    conn = cursor = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -305,8 +324,10 @@ def add_content():
         print(f"Database error: {e}")
         return jsonify({"msg": "Internal server error"}), 500
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
         
 @app.route('/admin/add_chart', methods=['POST'])
 @jwt_required()
@@ -320,6 +341,7 @@ def add_chart():
     if not all([page_type, chart_type, chart_data, order_id]):
         return jsonify({"msg": "Missing required fields"}), 400
     
+    conn = cursor = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -336,12 +358,15 @@ def add_chart():
         print(f"Database error: {e}")
         return jsonify({"msg": "Internal server error"}), 500
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 @app.route('/admin/content/<int:id>', methods=['PUT', 'DELETE'])
 @jwt_required()
 def manage_content(id):
+    conn = cursor = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -373,12 +398,15 @@ def manage_content(id):
         print(f"Database error: {e}")
         return jsonify({"msg": "Internal server error"}), 500
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 @app.route('/admin/chart/<int:id>', methods=['PUT', 'DELETE'])
 @jwt_required()
 def manage_chart(id):
+    conn = cursor = None
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -410,8 +438,10 @@ def manage_chart(id):
         print(f"Database error: {e}")
         return jsonify({"msg": "Internal server error"}), 500
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 if __name__ == '__main__':
     conn = get_db_connection()

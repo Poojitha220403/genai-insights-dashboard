@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+// d3 v7 ships ES modules that CRA's Jest doesn't transpile; charts aren't rendered here
+jest.mock('d3', () => ({}));
+
+beforeEach(() => localStorage.clear());
+
+test('logged-out visitors land on the welcome page with no app navbar', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByText(/Pioneering the Future/i)).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /logout/i })).not.toBeInTheDocument();
 });

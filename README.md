@@ -2,6 +2,7 @@
 
 A full-stack **single-page application** that presents recent innovations in Generative AI through JWT-protected dashboard, summary and report pages with **D3.js** charts. The **React** frontend talks to a **Flask + MySQL** REST API, and a built-in admin console lets you edit page content and chart data without redeploying.
 
+![CI](https://github.com/Poojitha220403/genai-insights-dashboard/actions/workflows/ci.yml/badge.svg)
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
 ![Flask](https://img.shields.io/badge/Flask-REST%20API-000000?logo=flask&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-8-4479A1?logo=mysql&logoColor=white)
@@ -70,6 +71,18 @@ npm start
 **Production:** `npm run build`, serve `p75_frontend/build/` with NGINX on port 80, and run the API with `gunicorn -b 0.0.0.0:3000 app:app`.
 
 > On first start the backend seeds a demo user, `poojitha`, whose password is the same word; the assignment brief required those credentials. Change it for any real deployment.
+
+## Testing
+
+Two GitHub Actions jobs run on every push:
+
+- **Backend:** 19 `pytest` tests against the Flask API with an in-memory fake of the MySQL pool, so no database is needed. They cover login validation, wrong and unknown credentials, JWT issuance, 401/422 on protected and admin routes, content/chart interleaving by `order_id`, clean 500s during a database outage, and refusing to start without `JWT_SECRET_KEY`.
+- **Frontend:** a Jest + React Testing Library smoke test (logged-out visitors see the welcome page without the app navbar), then a production build.
+
+```bash
+cd p75_backend && pip install -r requirements.txt -r requirements-dev.txt && pytest -q
+cd p75_frontend && npm ci && CI=true npx react-scripts test --watchAll=false
+```
 
 ## Results
 
